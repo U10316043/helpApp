@@ -23,13 +23,20 @@ class RecordReturnMissionViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    @IBOutlet weak var getpic: UIButton!
+    @IBOutlet weak var noGetPic: UIButton!
+    
     var isGet = 0
     @IBAction func getItem(_ sender: Any) {
         isGet = 0
+        getpic.setBackgroundImage(UIImage(named: "yesGet"), for: .normal)
+        noGetPic.setBackgroundImage(UIImage(named: "noGet"), for: .normal)
     }
     
     @IBAction func noGetItem(_ sender: Any) {
         isGet = 1
+        getpic.setBackgroundImage(UIImage(named: "noGet"), for: .normal)
+        noGetPic.setBackgroundImage(UIImage(named: "yesGet"), for: .normal)
     }
     @IBAction func checkAction(_ sender: Any) {
         Database.database().reference().child("Mission").observe(.childAdded, with: { (snap) in
