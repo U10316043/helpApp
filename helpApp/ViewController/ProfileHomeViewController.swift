@@ -22,6 +22,7 @@ class ProfileHomeViewController: UIViewController {
     var userAllHeart:Double = 0.0 // (userNeedHeart + userHelpHeart)/2
     @IBOutlet weak var userComplexHeart: UIImageView!
     @IBOutlet weak var userComplexHeartLabel: UILabel!
+    @IBOutlet weak var userPicture: UIImageView!
     
     let user = Auth.auth().currentUser
     @IBOutlet weak var userName: UILabel!
@@ -41,11 +42,25 @@ class ProfileHomeViewController: UIViewController {
     
     var heartList:[UIImage] = [UIImage(named: "allHeart0")!,UIImage(named: "allHeart1")!,UIImage(named: "allHeart2")!,UIImage(named: "allHeart3")!,UIImage(named: "allHeart4")!,UIImage(named: "allHeart5")! ]
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
         refU.observe(.childAdded, with: {(snap) in
             if let data = snap.value as? [String:Any] {
                 if (self.user?.email == data["usermail"] as! String) {
+                    if let imageUrlString = data["userPicture"] as? String {
+                        print("***** imageUrlString: ", imageUrlString)
+                        if let imageUrl = URL(string: imageUrlString) {
+                            URLSession.shared.dataTask(with: imageUrl, completionHandler: { (data, response, error) in
+                                if error != nil {
+                                    print("Download Image Task Fail: \(error!.localizedDescription)")
+                                } else if let imageData = data {
+                                    DispatchQueue.main.async {
+                                        self.userPicture.image = UIImage(data: imageData)
+                                        print("place a photo")
+                                    }
+                                }
+                            }).resume()
+                        }
+                    }
                     self.userName.text = data["username"] as! String
                     self.userschool.text = data["userschool"] as! String
                     self.userNeedHeart = data["userNeedStar"] as! Double
@@ -72,7 +87,10 @@ class ProfileHomeViewController: UIViewController {
                 }
             }
         })
-        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
 
     override func didReceiveMemoryWarning() {

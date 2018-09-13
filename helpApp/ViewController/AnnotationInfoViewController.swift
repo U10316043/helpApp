@@ -19,6 +19,8 @@ class AnnotationInfoViewController: UIViewController {
     @IBOutlet weak var returnTime: UILabel!
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var itemDetail: UILabel!
+    @IBOutlet weak var userPicture: UIImageView!
+    
     var userNeedHeart:Double = 0.0 // userNeedStar from DB
     var userHelpHeart:Double = 0.0 // userHelpStar from DB
     var userAllHeart:Double = 0.0 // (userNeedHeart + userHelpHeart)/2
@@ -86,6 +88,21 @@ class AnnotationInfoViewController: UIViewController {
                         self.needHelpName.text = "我自己"
                     } else {
                         self.needHelpName.text = data["username"] as! String
+                    }
+                    if let imageUrlString = data["userPicture"] as? String {
+                        print("***** imageUrlString: ", imageUrlString)
+                        if let imageUrl = URL(string: imageUrlString) {
+                            URLSession.shared.dataTask(with: imageUrl, completionHandler: { (data, response, error) in
+                                if error != nil {
+                                    print("Download Image Task Fail: \(error!.localizedDescription)")
+                                } else if let imageData = data {
+                                    DispatchQueue.main.async {
+                                        self.userPicture.image = UIImage(data: imageData)
+                                        print("place a photo")
+                                    }
+                                }
+                            }).resume()
+                        }
                     }
                     self.userNeedHeart = data["userNeedStar"] as! Double
                     self.userHelpHeart = data["userHelpStar"] as! Double

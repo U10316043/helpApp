@@ -14,6 +14,7 @@ class ProfileCommentTableViewCell: UITableViewCell {
     @IBOutlet weak var userHeart: UIImageView!
     @IBOutlet weak var userHelpNeed: UILabel!
     @IBOutlet weak var userMessage: UITextView!
+    @IBOutlet weak var userPicture: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

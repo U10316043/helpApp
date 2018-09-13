@@ -51,8 +51,10 @@ class RecordReturnMissionViewController: UIViewController {
                 }
             }
         })
+        sleep(1)
         self.dismiss(animated: true, completion: nil)
     }
+    
     @IBAction func backbtn(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }

@@ -36,6 +36,7 @@ class RecordNeedSelfViewController: UIViewController {
     @IBOutlet weak var goodmanLabel: UILabel!
     @IBOutlet weak var goodMan: UILabel!
     @IBOutlet weak var goodManSchool: UILabel!
+    @IBOutlet weak var userPicture: UIImageView!
     
     @IBOutlet weak var needButton: UIButton!
     @IBOutlet weak var reportAction: UIButton!
@@ -43,7 +44,6 @@ class RecordNeedSelfViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         refM.observe(.childAdded, with: { (snap) in
             if let data = snap.value as? [String:Any]{
                 if ( self.needMissionId == (data["missionID"] as! String)) {
@@ -107,7 +107,6 @@ class RecordNeedSelfViewController: UIViewController {
                     let dateComponent = DateComponentsFormatter()
                     dateComponent.allowedUnits = [.minute]
                     let time:String = dateComponent.string(from: self.currentTime, to:newSetTime!)!
-                    self.missionStatus.text = data["status"] as! String
                     if (data["status"] as! String == "waiting") {
                         self.hopeWatingTime.text = " 還有\(time) 分鐘"
                     } else {
@@ -119,6 +118,21 @@ class RecordNeedSelfViewController: UIViewController {
         Database.database().reference().child("User").observe(.childAdded, with: { (snap) in
             if let data = snap.value as? [String:Any]{
                 if self.needUserMail == data["usermail"] as! String {
+                    
+                    if let imageUrlString = data["userPicture"] as? String {
+                        if let imageUrl = URL(string: imageUrlString) {
+                            URLSession.shared.dataTask(with: imageUrl, completionHandler: { (data, response, error) in
+                                if error != nil {
+                                    print("Download Image Task Fail: \(error!.localizedDescription)")
+                                } else if let imageData = data {
+                                    DispatchQueue.main.async {
+                                        self.userPicture.image = UIImage(data: imageData)
+                                    }
+                                }
+                            }).resume()
+                        }
+                    }
+                    
                     self.goodMan.text = data["username"] as! String
                     self.userNeedHeart = data["userNeedStar"] as! Double
                     self.userHelpHeart = data["userHelpStar"] as! Double
@@ -144,10 +158,7 @@ class RecordNeedSelfViewController: UIViewController {
                     }
                 }
             }
-        })
-        
-        
-        
+        })    
     }
     
     

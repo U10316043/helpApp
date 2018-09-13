@@ -59,8 +59,7 @@ class ProfileSettingViewController: UIViewController, UIImagePickerControllerDel
     
     
     override func viewWillAppear(_ animated: Bool) {
-        
-        
+        self.tabBarController?.tabBar.isHidden = true
         self.ref.observe(.childAdded, with: { (snap) in
             if let data = snap.value as? [String:Any]{
                 if Auth.auth().currentUser?.email == data["usermail"] as? String {
@@ -89,7 +88,6 @@ class ProfileSettingViewController: UIViewController, UIImagePickerControllerDel
                                 }
                             }).resume()
                         }
-                        
                     }
                     
                 }
@@ -191,6 +189,11 @@ class ProfileSettingViewController: UIViewController, UIImagePickerControllerDel
         super.viewDidLoad()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

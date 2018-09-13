@@ -40,9 +40,10 @@ class WelcomeViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         let user = Auth.auth().currentUser
         if user != nil {
-            print("user")
-            print(user)
-            print(user?.email)
+            print("user：\(user?.email)")
+
+            
+            
         }
         
         

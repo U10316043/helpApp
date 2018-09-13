@@ -27,6 +27,7 @@ class RecordHelpSelfViewController: UIViewController {
     @IBOutlet weak var Itemtitle: UILabel!
     @IBOutlet weak var itemDetail: UILabel!
     
+    @IBOutlet weak var userPicture: UIImageView!
     @IBOutlet weak var helpUserName: UILabel!
     @IBOutlet weak var helpUserSchool: UILabel!
     @IBOutlet weak var hopewaitingTime: UILabel!
@@ -86,7 +87,6 @@ class RecordHelpSelfViewController: UIViewController {
                     self.itemDetail.text = data["objectDetail"] as! String
                     self.hopewaitingTime.text = "\(data["waitingTime"] as! String)分鐘(謝謝借我)"
                     self.hopeReturnTime.text = data["returnTime"] as! String
-                    self.missionStatus.text = data["status"] as! String
                     self.helpUserMail = data["missionUser"] as! String
                 }
             }
@@ -94,9 +94,21 @@ class RecordHelpSelfViewController: UIViewController {
         refU.observe(.childAdded, with: { (snap) in
             if let data = snap.value as? [String:Any]{
                 if self.helpUserMail == data["usermail"] as! String {
+                    if let imageUrlString = data["userPicture"] as? String {
+                        if let imageUrl = URL(string: imageUrlString) {
+                            URLSession.shared.dataTask(with: imageUrl, completionHandler: { (data, response, error) in
+                                if error != nil {
+                                    print("Download Image Task Fail: \(error!.localizedDescription)")
+                                } else if let imageData = data {
+                                    DispatchQueue.main.async {
+                                        self.userPicture.image = UIImage(data: imageData)
+                                    }
+                                }
+                            }).resume()
+                        }
+                    }
                     self.helpUserName.text = data["username"] as! String
-                    self.helpUserSchool.text = data["userschool"] as! String
-                    
+                    self.helpUserSchool.text = data["userschool"] as! String                    
                     self.userNeedHeart = data["userNeedStar"] as! Double
                     self.userHelpHeart = data["userHelpStar"] as! Double
                     self.userComplexHeart.isHidden = false
