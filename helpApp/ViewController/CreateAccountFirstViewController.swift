@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import Firebase
 
 class CreateAccountFirstViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet weak var userMail: UITextField!
@@ -25,6 +26,10 @@ class CreateAccountFirstViewController: UIViewController,UITextFieldDelegate {
         } else {
             Auth.auth().createUser(withEmail: userMail.text!, password: userPassword.text!) { (user, error) in
                 if error == nil {
+                    
+                    let userdata = ["usermail": self.userMail.text,"username": "","usergender":"","userschool":"","usergrade":"","userphone":"","userHelpStar":-1, "userNeedStar":-1] as [String : Any]
+                    Database.database().reference().child("User").childByAutoId().setValue(userdata)
+                    
                     let alertController = UIAlertController(title: "Success", message: "You have successfully signed up", preferredStyle: .alert)
                     let defaultAction = UIAlertAction(title: "OK", style: .default) { (defaultAction) -> Void in
                         let vc:CreateAccountSecondViewController = self.storyboard?.instantiateViewController(withIdentifier: "CreateAccountSecondVC") as! CreateAccountSecondViewController

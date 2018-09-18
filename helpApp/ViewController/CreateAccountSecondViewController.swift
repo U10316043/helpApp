@@ -51,7 +51,21 @@ class CreateAccountSecondViewController: UIViewController,UITextFieldDelegate {
         } else {
             var gender:String = usergender.titleForSegment(at: usergender.selectedSegmentIndex)!
             print("gender: \(gender)")
-            let userdata = ["usermail": mail,"username":username.text!,"usergender":gender,"userschool":userschool.text!,"usergrade":usergrade.text!,"userphone":userphone.text!,"userHelpStar":-1, "userNeedStar":-1] as [String : Any]
+            
+            
+            self.ref.observe(.childAdded, with: { (snaps) in
+                if let data = snaps.value as? [String:Any]{
+                    if self.mail == data["usermail"] as? String {
+                        self.ref.child(snaps.key).child("usergender").setValue(gender)
+                        self.ref.child(snaps.key).child("username").setValue(self.username.text!)
+                        self.ref.child(snaps.key).child("userschool").setValue(self.userschool.text!)
+                        self.ref.child(snaps.key).child("usergrade").setValue(self.usergrade.text!)
+                        self.ref.child(snaps.key).child("userphone").setValue(self.userphone.text!)
+                        self.ref.child(snaps.key).child("userschool").setValue(self.userschool.text!)
+                    }
+                }
+            })
+            
             
             let alertController = UIAlertController(title: "Success", message: "You have filled in  your information", preferredStyle: .alert)
             let defaultAction = UIAlertAction(title: "OK", style: .default) { (defaultAction) -> Void in
@@ -61,8 +75,7 @@ class CreateAccountSecondViewController: UIViewController,UITextFieldDelegate {
             alertController.addAction(defaultAction)
             self.present(alertController, animated: true, completion: nil)
             
-            
-            ref.childByAutoId().setValue(userdata)
+
         }
         
     }
@@ -70,6 +83,8 @@ class CreateAccountSecondViewController: UIViewController,UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
     // 當任何的textfield為空時跳出提示
     func emptyAlertFunction(alertMessage:String) {

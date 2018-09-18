@@ -59,7 +59,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="nl9-63-Ipv" kind="show" id="t56-Ea-h0t"/>
+                                    <action selector="toCreateCount:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6Qi-fw-czc"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FmV-tJ-c5R">
@@ -73,7 +73,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="9Gp-5F-ioQ" kind="show" id="Q0N-Bh-Yr5"/>
+                                    <action selector="toLogin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zdj-ca-kDf"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -97,6 +97,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="createCountButton" destination="vwe-hw-ecP" id="rBq-WH-yoO"/>
+                        <outlet property="loginButton" destination="FmV-tJ-c5R" id="xYp-Uy-R7M"/>
                         <outlet property="pageControl" destination="vaK-HX-d17" id="WRy-ma-F3h"/>
                         <outlet property="scrollView" destination="3dM-OS-wfo" id="t59-LB-KUh"/>
                     </connections>
@@ -2913,7 +2915,6 @@
         <image name="yesGet" width="305" height="305"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="t56-Ea-h0t"/>
-        <segue reference="Q0N-Bh-Yr5"/>
+        <segue reference="GZx-OX-nCE"/>
     </inferredMetricsTieBreakers>
 </document>

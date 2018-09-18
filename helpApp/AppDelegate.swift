@@ -18,11 +18,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     var formatter:DateFormatter = DateFormatter()
     var currentTime:Date = Date()
     var timer:Timer!
-    var numbertest:Int = 0
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // Database
         FirebaseApp.configure()
+        print("currentUser:  \(Auth.auth().currentUser?.email)")
+        
+//        Database.database().reference().child("User").observe(.childAdded, with: { (snap) in
+//            if let data = snap.value as? [String:Any]{
+//                if Auth.auth().currentUser?.email == data["usermail"] as? String {
+//                    // 檢查有沒有使用者創建帳號後沒有填寫詳細身份資訊
+//                    if (data["username"]! as! String) != "" {
+//                        print("true")
+//                        let storyboard = self.window?.rootViewController?.storyboard
+//                        let vc:TabbarViewController = (storyboard?.instantiateViewController(withIdentifier: "TabbarVC")) as! TabbarViewController
+//                        self.window?.rootViewController = vc
+//                        self.window?.makeKeyAndVisible()
+//                    } else {
+//                        print("false")
+//                        Auth.auth().currentUser?.delete { error in
+////                            if let error = error {
+////                                // An error happened.
+////                            } else {
+////
+////                            }
+////                        }
+////                        // Delete the file
+////                        Database.database().reference().child("User").child(snap.key).removeValue()
+////
+//                    }
+//                }
+//            }
+//        })
+        
+        
+        
+        
+        
+
         
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
@@ -32,6 +65,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(readTime), userInfo: nil, repeats: true)
         return true
     }
+    
+    
     
     @objc func readTime(){
         self.currentTime = Date()

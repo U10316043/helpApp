@@ -130,6 +130,8 @@ class AnnotationInfoViewController: UIViewController {
         })
     }
     
+    
+    
     @IBAction func helpAction(_ sender: Any) {
         let vc = UIApplication.shared.delegate as! AppDelegate
         let currentPosition = vc.locationManager.location?.coordinate
